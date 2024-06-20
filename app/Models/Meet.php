@@ -5,14 +5,14 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Assistant extends Model
+class Meet extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['code', 'name', 'rfid'];
+    protected $fillable = ['date'];
 
-    public function meets()
+    public function assistants()
     {
-        return $this->belongsToMany(Meet::class);
+        return $this->belongsToMany(Assistant::class);
     }
 }
