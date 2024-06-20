@@ -1,12 +1,8 @@
 <div>
     <form wire:submit="save">
-        <div x-data="{ nokartu: '' }"
-             x-init="setInterval(() => {
-                 fetch('/nokartu')
-                 .then(response => response.text())
-                 .then(data => nokartu = data);
-             }, 2000)">
-            <div x-html="nokartu"></div>
+        <div wire:poll="updateRfid">
+            <input wire:model="rfid" type="text" placeholder="Tempelkan Kartu pada perangkat" readonly
+                autocomplete="off">
         </div>
 
         <input type="text" wire:model="code">

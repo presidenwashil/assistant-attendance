@@ -13,4 +13,4 @@ Route::get('/nokartu', [RfidController::class, 'nokartu']);
 
 Route::resource('/assistant', AssistantController::class);
 
-// Route::get('/assistants/create', CreateAssistant::class)->name('assistants.create');
+Route::get('/assistants/create', CreateAssistant::class)->name('assistants.create');

@@ -3,6 +3,7 @@
 namespace App\Livewire;
 
 use App\Models\Assistant;
+use App\Models\Rfid;
 use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 
@@ -12,9 +13,19 @@ class CreateAssistant extends Component
     public $name = '';
     public $rfid = '';
 
-    public function updateRfid($value)
+    protected $listeners = ['refreshRfid'];
+
+    public function mount()
     {
-        $this->rfid = $value;
+        $this->updateRfid();
+    }
+
+    public function updateRfid()
+    {
+        $latestRfid = Rfid::latest()->first();
+        if ($latestRfid) {
+            $this->rfid = $latestRfid->rfid;
+        }
     }
 
     public function save()
