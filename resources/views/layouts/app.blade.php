@@ -9,10 +9,12 @@
         <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 
         @livewireStyles
+        @filamentStyles
     </head>
     <body>
         {{ $slot }}
 
         @livewireScripts
+        @filamentScripts
     </body>
 </html>
