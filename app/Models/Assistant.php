@@ -11,8 +11,8 @@ class Assistant extends Model
 
     protected $fillable = ['code', 'name', 'rfid'];
 
-    public function meets()
+    public function presences()
     {
-        return $this->belongsToMany(Meet::class, 'assistant_meet');
+        return $this->hasMany(Presence::class, 'rfid', 'rfid');
     }
 }

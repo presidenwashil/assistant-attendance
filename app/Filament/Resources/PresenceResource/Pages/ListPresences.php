@@ -1,14 +1,14 @@
 <?php
 
-namespace App\Filament\Resources\CourseResource\Pages;
+namespace App\Filament\Resources\PresenceResource\Pages;
 
-use App\Filament\Resources\CourseResource;
+use App\Filament\Resources\PresenceResource;
 use Filament\Actions;
 use Filament\Resources\Pages\ListRecords;
 
-class ListCourses extends ListRecords
+class ListPresences extends ListRecords
 {
-    protected static string $resource = CourseResource::class;
+    protected static string $resource = PresenceResource::class;
 
     protected function getHeaderActions(): array
     {

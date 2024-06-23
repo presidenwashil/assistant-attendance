@@ -10,12 +10,12 @@ return new class extends Migration {
      */
     public function up(): void
     {
-        Schema::create('meets', function (Blueprint $table) {
+        Schema::create('presences', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(App\Models\Group::class);
-            $table->string('meet_count');
-            $table->string('date');
-            $table->timestamps();
+            $table->string('rfid');
+            $table->date('date');
+            $table->time('in');
+            $table->time('out')->nullable();
         });
     }
 
@@ -24,6 +24,6 @@ return new class extends Migration {
      */
     public function down(): void
     {
-        Schema::dropIfExists('meets');
+        Schema::dropIfExists('presences');
     }
 };

@@ -1,14 +1,14 @@
 <?php
 
-namespace App\Filament\Resources\MajorResource\Pages;
+namespace App\Filament\Resources\PresenceResource\Pages;
 
-use App\Filament\Resources\MajorResource;
+use App\Filament\Resources\PresenceResource;
 use Filament\Actions;
 use Filament\Resources\Pages\EditRecord;
 
-class EditMajor extends EditRecord
+class EditPresence extends EditRecord
 {
-    protected static string $resource = MajorResource::class;
+    protected static string $resource = PresenceResource::class;
 
     protected function getHeaderActions(): array
     {

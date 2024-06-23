@@ -59,9 +59,23 @@ class AssistantForm extends Component implements HasForms
     {
         $data = $this->form->getState();
 
+        $existingRfid = Assistant::where('rfid', $data['rfid'])->first();
+        if ($existingRfid) {
+            DB::table('rfids')->truncate();
+
+            $this->reset(['data']);
+
+            Notification::make()
+                ->title('Error')
+                ->body('RFID already exists.')
+                ->warning()
+                ->send();
+            return;
+        }
+
         $record = Assistant::create($data);
 
-        DB::table('rfids')->delete();
+        DB::table('rfids')->truncate();
 
         $this->form->model($record)->saveRelationships();
 
