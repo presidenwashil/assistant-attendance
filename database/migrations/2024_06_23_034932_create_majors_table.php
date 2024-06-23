@@ -1,22 +1,19 @@
 <?php
 
-use App\Models\Assistant;
-use App\Models\Meet;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class extends Migration {
     /**
      * Run the migrations.
      */
     public function up(): void
     {
-        Schema::create('assistant_meet', function (Blueprint $table) {
+        Schema::create('majors', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(Assistant::class);
-            $table->foreignIdFor(Meet::class);
+            $table->string('code');
+            $table->string('name');
             $table->timestamps();
         });
     }
@@ -26,6 +23,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('assistant_meet');
+        Schema::dropIfExists('majors');
     }
 };
