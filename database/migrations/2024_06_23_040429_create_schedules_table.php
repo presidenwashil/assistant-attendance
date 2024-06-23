@@ -12,7 +12,7 @@ return new class extends Migration {
     {
         Schema::create('schedules', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('course_group_id')->constrained();
+            $table->foreignIdFor(\App\Models\Group::class)->constrained();
             $table->string('day');
             $table->time('start');
             $table->time('end');

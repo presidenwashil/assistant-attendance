@@ -12,7 +12,7 @@ return new class extends Migration {
     {
         Schema::create('meets', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('course_group_id')->constrained();
+            $table->foreignIdFor(App\Models\Group::class);
             $table->string('meet_count');
             $table->string('date');
             $table->timestamps();

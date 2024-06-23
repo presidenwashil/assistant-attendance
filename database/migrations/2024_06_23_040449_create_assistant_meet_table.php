@@ -12,7 +12,7 @@ return new class extends Migration {
     {
         Schema::create('assistant_meet', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(\App\Models\Assistant::class);
+            $table->string('rfid');
             $table->foreignIdFor(\App\Models\Meet::class);
             $table->timestamps();
         });

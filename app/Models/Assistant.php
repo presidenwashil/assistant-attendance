@@ -13,6 +13,6 @@ class Assistant extends Model
 
     public function meets()
     {
-        return $this->belongsToMany(Meet::class);
+        return $this->belongsToMany(Meet::class, 'assistant_meet');
     }
 }

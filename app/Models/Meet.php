@@ -9,10 +9,13 @@ class Meet extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['date'];
+    public function group()
+    {
+        return $this->belongsTo(Group::class);
+    }
 
     public function assistants()
     {
-        return $this->belongsToMany(Assistant::class);
+        return $this->belongsToMany(Assistant::class, 'assistant_meet');
     }
 }
