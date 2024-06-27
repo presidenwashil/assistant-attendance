@@ -14,7 +14,9 @@ class IncomingPresence extends Component
 
     public $name = '';
 
-    public $hasAttended = false;
+    public $rfidExists = '';
+
+    public $hasAttended = '';
 
     public $activeTab = 'masuk';
 
@@ -32,6 +34,9 @@ class IncomingPresence extends Component
 
     public function updateRfid()
     {
+        $this->rfidExists = true;
+        $this->hasAttended = false;
+
         $latestRfid = Rfid::latest()->first();
         if ($latestRfid) {
             $this->rfid = $latestRfid->rfid;
@@ -40,7 +45,7 @@ class IncomingPresence extends Component
             if ($assistant) {
 
                 $this->name = $assistant->name;
-                $this->hasAttended = false; // Inisialisasi status absensi
+                $this->hasAttended = false;
 
                 $date = Carbon::now('Asia/Kuala_Lumpur')->format('Y-m-d');
 
@@ -55,7 +60,7 @@ class IncomingPresence extends Component
                             'in' => Carbon::now('Asia/Kuala_Lumpur')->format('H:i:s'),
                         ]);
                     } else {
-                        $this->hasAttended = true; // Absensi sudah dilakukan
+                        $this->hasAttended = true;
                     }
 
                     Rfid::truncate();
@@ -75,10 +80,13 @@ class IncomingPresence extends Component
                     Rfid::truncate();
                 }
             } else {
+                $this->rfidExists = false;
                 $this->name = null;
+                Rfid::truncate();
             }
         } else {
             $this->name = null;
+            Rfid::truncate();
         }
     }
 
