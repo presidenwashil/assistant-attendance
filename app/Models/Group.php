@@ -9,6 +9,11 @@ class Group extends Model
 {
     use HasFactory;
 
+    public function schedules()
+    {
+        return $this->hasMany(Schedule::class);
+    }
+
     public function meets()
     {
         return $this->hasMany(Meet::class);

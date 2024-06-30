@@ -5,18 +5,18 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Meet extends Model
+class Period extends Model
 {
     use HasFactory;
 
-    public function group()
+    public function day()
     {
-        return $this->belongsTo(Group::class);
+        return $this->belongsTo(Day::class);
     }
 
-    public function assistants()
+    public function rooms()
     {
-        return $this->belongsToMany(Assistant::class, 'assistant_meets')
+        return $this->belongsToMany(Room::class, 'schedules')
             ->withTimestamps();
     }
 }

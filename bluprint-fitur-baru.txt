@@ -1,0 +1,62 @@
+satu grup memiliki banyak schedule
+dengan kemungkinan adanya day dan periode yang berbeda
+
+
+schedule
+grup1
+senin
+pemrograman
+1
+start = 08:00
+end = 09:30
+
+grup1
+selasa
+pemrograman
+3
+start = 11:00
+end = 12:30
+
+
+pertemuan_ke  = Pertemuan::where('group_id', $schedule->group_id)->count() + 1
+
+currentday = now()->format('l')
+curenttime = now()->format('H:i:s')
+
+apakah ada
+schedule::with('room', 'period', 'period.day')->where('room.name', 'Pemrograman')
+    ->whereDay('period.day.name', currentday)
+    ->whereTime('period.start', '<=' currenttime)
+    ->whereTime('period.end', '>=' curenttime)
+    ->first()
+
+    buat pengecekan di atas pembuatan data pertemuan
+    apabila sudah ada maka tidak perlu membuat pertemuan lagi
+    hanya perlu menambahkan absensi asisten
+
+    Pertemuan::create([
+        'group_id' => $schedule->group_id,
+        'pertemuan_ke' => $pertemuan_ke,
+        'date' => now()->format('Y-m-d'),
+    ])
+
+    cek dulu apakah slot masih cukup dengan cara
+    room kan memiliki slot nah absensiAssisten itu ada atribut slot used
+    caranya jumlahkan slot used yang ada di absensiAssisten
+    jika slot used < room.slot maka bisa di tambahkan
+    jika tidak maka tidak bisa di tambahkan asisten lagi
+
+    cek juga apakah asisten sudah absen atau belum
+
+    absensiAssisten::create([
+        'pertemuan_id' => $pertemuan->id,
+        'rfid' => 'rfid'
+    ])
+
+
+muncul isu baru dimana jika untuk membaca kartu nya menggunakan model atau table yang sama
+dalam kasus ini kita hanya menggunakan Rfid hal ini dapat menyebabkan
+terjadinya tabrakan yang tidak diinginkan dimana bisa terjadi kesalahan
+saat beberapa asisten melakukan tap secara bersamaan
+oleh karena itu solusinya adalah membuat model yang berbeda untuk
+rfid sementara pula untuk setiap ruangannya.
