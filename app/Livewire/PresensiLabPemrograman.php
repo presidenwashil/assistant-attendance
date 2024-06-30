@@ -12,37 +12,16 @@ use Livewire\Component;
 class PresensiLabPemrograman extends Component
 {
     public $rfid = '';
-
     public $name = '';
-
     public $rfidExists = null;
-
-    public $hasAttended = '';
-
+    public $hasAttended = false;
     public $roomFull = false;
-
     public $ongoingPeriod = null;
 
     protected $listeners = ['refreshRfid'];
 
-    public function resetValues()
-    {
-        $this->rfid = '';
-        $this->name = '';
-        $this->rfidExists = null;
-        $this->hasAttended = false;
-        $this->roomFull = false;
-        $this->ongoingPeriod = null;
-    }
-
-    public function render()
-    {
-        return view('livewire.presensi-lab-pemrograman');
-    }
-
     public function mount()
     {
-        $this->resetValues();
         $this->updateRfid();
     }
 
@@ -76,8 +55,8 @@ class PresensiLabPemrograman extends Component
             ->first();
 
         if (!$ongoingPeriod) {
-            $this->ongoingPeriod = null; // Ensure ongoingPeriod is null if not found
-            $this->rfidExists = true; // Ensure rfidExists is true to trigger message
+            $this->ongoingPeriod = null;
+            $this->rfidExists = true;
             return;
         }
 
@@ -104,7 +83,6 @@ class PresensiLabPemrograman extends Component
 
         if ($roomSlot >= $ongoingPeriod->room->slots) {
             $this->roomFull = true;
-            $this->hasAttended = true;
             Rfid::truncate();
             return;
         }
@@ -126,14 +104,32 @@ class PresensiLabPemrograman extends Component
             ->first();
 
         if (!$alreadyAttended) {
+            $this->hasAttended = false;
+
             AssistantMeet::create([
                 'meet_id' => $meet->id,
                 'assistant_id' => $assistant->id,
                 'slot_used' => 1
             ]);
+        } else {
             $this->hasAttended = true;
         }
 
         Rfid::truncate();
+    }
+
+    public function resetValues()
+    {
+        $this->rfid = '';
+        $this->name = '';
+        $this->rfidExists = null;
+        $this->hasAttended = false;
+        $this->roomFull = false;
+        $this->ongoingPeriod = null;
+    }
+
+    public function render()
+    {
+        return view('livewire.presensi-lab-pemrograman');
     }
 }
