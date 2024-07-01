@@ -34,13 +34,6 @@ class PresensiLabPemrograman extends Component
         $currentTime = now()->format('H:i:s');
         $room = 'Pemrograman';
 
-        if (!$latestRfid) {
-            Rfid::truncate();
-            return;
-        }
-
-        $this->rfid = $latestRfid->rfid;
-
         $ongoingPeriod = Schedule::with('group', 'period', 'period.day', 'room')
             ->whereHas('room', function ($query) use ($room) {
                 $query->where('name', $room);
@@ -59,6 +52,13 @@ class PresensiLabPemrograman extends Component
             $this->rfidExists = true;
             return;
         }
+
+        if (!$latestRfid) {
+            Rfid::truncate();
+            return;
+        }
+
+        $this->rfid = $latestRfid->rfid;
 
         $this->ongoingPeriod = $ongoingPeriod;
 
@@ -79,14 +79,6 @@ class PresensiLabPemrograman extends Component
             'meet_count' => $newMeetCount
         ]);
 
-        $roomSlot = AssistantMeet::where('meet_id', $meet->id)->sum('slot_used');
-
-        if ($roomSlot >= $ongoingPeriod->room->slots) {
-            $this->roomFull = true;
-            Rfid::truncate();
-            return;
-        }
-
         $assistant = Assistant::where('rfid', $this->rfid)->first();
 
         if (!$assistant) {
@@ -102,6 +94,21 @@ class PresensiLabPemrograman extends Component
         $alreadyAttended = AssistantMeet::where('meet_id', $meet->id)
             ->where('assistant_id', $assistant->id)
             ->first();
+
+        if ($alreadyAttended) {
+            $this->hasAttended = true;
+            Rfid::truncate();
+            return;
+        }
+
+        $roomSlot = AssistantMeet::where('meet_id', $meet->id)->sum('slot_used');
+        if ($roomSlot >= $ongoingPeriod->room->slots) {
+            $this->roomFull = true;
+            $this->rfidExists = true;
+            $this->name = null;
+            Rfid::truncate();
+            return;
+        }
 
         if (!$alreadyAttended) {
             $this->hasAttended = false;
